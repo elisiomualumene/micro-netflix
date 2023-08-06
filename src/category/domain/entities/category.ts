@@ -1,7 +1,7 @@
 
 export type ICategoryProps = {
     name: string;
-    is_active?: string;
+    is_active?: boolean;
     description?: string;
     created_at?: Date;
 }
@@ -17,7 +17,7 @@ export class Category {
         return this.props.description
     }
 
-    get is_active(): string | undefined{
+    get is_active(): boolean | undefined{
         return this.props.is_active
     }
 
