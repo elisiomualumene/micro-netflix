@@ -13,6 +13,6 @@ describe("Category Test", () => {
 
         const category = new Category(props)
 
-        expect(category).toMatchObject({props})
+        expect(category).toStrictEqual({props})
     })
 })
