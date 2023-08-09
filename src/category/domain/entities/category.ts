@@ -1,3 +1,5 @@
+import UniqueEntityId from "shared/domain/unique-entity-id.vo";
+
 export type ICategoryProps = {
   name: string;
   is_active?: boolean;
@@ -6,7 +8,9 @@ export type ICategoryProps = {
 };
 
 export class Category {
-  constructor(public readonly props: ICategoryProps) {
+  public readonly id: UniqueEntityId;
+  constructor(public readonly props: ICategoryProps, id?: UniqueEntityId) {
+    this.id = id || new UniqueEntityId();
     this.props.description = this.props.description;
     this.props.is_active = this.props.is_active ?? true;
     this.props.created_at = this.props.created_at ?? new Date();
