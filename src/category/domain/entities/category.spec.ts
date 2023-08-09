@@ -1,4 +1,4 @@
-import { Category } from "./category";
+import { Category, ICategoryProps } from "./category";
 import { omit } from "lodash";
 
 describe("Category Test", () => {
@@ -62,20 +62,23 @@ describe("Category Test", () => {
     });
   });
   it("Getter of name field", () => {
-    const category = new Category({name: "Movie"})
+    const category = new Category({ name: "Movie" });
 
-    expect(category.name).toBe("Movie")
-  })
+    expect(category.name).toBe("Movie");
+  });
 
   it("Getter and setter of description field", () => {
-    const category = new Category({name: "Movie", description: "some description"})
+    const category = new Category({
+      name: "Movie",
+      description: "some description",
+    });
 
-    expect(category.description).toBe("some description")
-  })
+    expect(category.description).toBe("some description");
+  });
 
   it("Getter and setter of description field 2", () => {
-    const category10 = new Category({name: "Movie"})
+    const category10 = new Category({ name: "Movie" });
 
-    expect(category10.description).toBeUndefined()
-  })
+    expect(category10.description).toBeUndefined();
+  });
 });
