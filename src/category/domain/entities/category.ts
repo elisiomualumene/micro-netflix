@@ -10,27 +10,15 @@ export type ICategoryProps = {
 
 export class Category extends Entity<ICategoryProps> {
   constructor(public readonly props: ICategoryProps, id?: UniqueEntityId) {
-    if(!props.name){
-      throw new Error("Name is required")
-    }
-    if(props.name.length > 255){
-      throw new Error("Name must be less than 255")
-    }
-    super(props, id)
+    super(props, id);
     this.props.description = this.props.description;
     this.props.is_active = this.props.is_active ?? true;
     this.props.created_at = this.props.created_at ?? new Date();
   }
 
-  update(name: string, description: string): void{
-    if(name){
-      throw new Error("Name is required")
-    }
-    if(name.length > 255){
-      throw new Error("Name must be less than 255")
-    }
+  update(name: string, description: string): void {
     this.props.name = name;
-    this.description = description
+    this.description = description;
   }
 
   get name(): string {
