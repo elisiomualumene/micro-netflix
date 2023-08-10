@@ -18,7 +18,7 @@ function assertIsInvalid({
     const validator = ValidatorRules.values(value, "field");
     const method = validator[rule];
     //@ts-ignore
-    method.apply(validator, ...params);
+    method.apply(validator, params);
   }).toThrow(error);
 }
 
@@ -32,7 +32,7 @@ function assertIsValid({
     const validator = ValidatorRules.values(value, "field");
     const method = validator[rule];
     //@ts-ignore
-    method.apply(validator, ...params);
+    method.apply(validator, params);
   }).not.toThrow(error);
 }
 
@@ -66,17 +66,50 @@ describe("Validators Rules Unit Tests", () => {
 
   test("string validation rule", () => {
     let arrange: any[] = [0, 5, false];
+
+    const error = new ValidationError(`The field must be a string`)
+    
     arrange.forEach((item) => {
-      expect(() =>
-        ValidatorRules.values(item, "field").required().string()
-      ).toThrow(new ValidationError(`The field must be a string`));
+      assertIsInvalid({
+        value: item,
+        rule: "string",
+        error
+      });
     });
+
 
     arrange = ["0", "zero", "test"];
     arrange.forEach((item) => {
-      expect(() =>
-        ValidatorRules.values(item, "field").required().string()
-      ).not.toThrow(new ValidationError(`The field must be a string`));
+      assertIsValid({
+        value: item,
+        rule: "string",
+        error
+      });
+    });
+  });
+
+  test("maxLength validation rule", () => {
+    let arrange: any[] = ["test1234"];
+    let error = new ValidationError(`The max length of property field is 5 characters`)
+    
+    arrange.forEach((item) => {
+      assertIsInvalid({
+        value: item,
+        rule: "maxLength",
+        error,
+        params: [5]
+      });
+    });
+
+
+    arrange = ["test1", "test2"];
+    arrange.forEach((item) => {
+      assertIsValid({
+        value: item,
+        rule: "maxLength",
+        error,
+        params: [5]
+      });
     });
   });
 });
