@@ -78,7 +78,7 @@ describe("Validators Rules Unit Tests", () => {
     });
 
 
-    arrange = ["0", "zero", "test"];
+    arrange = ["0", "zero", "test", null, undefined];
     arrange.forEach((item) => {
       assertIsValid({
         value: item,
@@ -102,7 +102,7 @@ describe("Validators Rules Unit Tests", () => {
     });
 
 
-    arrange = ["test1", "test2"];
+    arrange = ["test1", "test2", null, undefined];
     arrange.forEach((item) => {
       assertIsValid({
         value: item,
@@ -112,4 +112,26 @@ describe("Validators Rules Unit Tests", () => {
       });
     });
   });
+  test("boolean validation rule", () => {
+    let arrange: any[] = ["test", "test2"];
+    let error = new ValidationError(`The field must be a boolean`)
+    
+    arrange.forEach((item) => {
+      assertIsInvalid({
+        value: item,
+        rule: "boolean",
+        error,
+      });
+    });
+
+
+    arrange = [true, false];
+    arrange.forEach((item) => {
+      assertIsValid({
+        value: item,
+        rule: "boolean",
+        error,
+      });
+    });
+  })
 });
