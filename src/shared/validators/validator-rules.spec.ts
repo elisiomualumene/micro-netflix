@@ -67,40 +67,40 @@ describe("Validators Rules Unit Tests", () => {
   test("string validation rule", () => {
     let arrange: any[] = [0, 5, false];
 
-    const error = new ValidationError(`The field must be a string`)
-    
+    const error = new ValidationError(`The field must be a string`);
+
     arrange.forEach((item) => {
       assertIsInvalid({
         value: item,
         rule: "string",
-        error
+        error,
       });
     });
-
 
     arrange = ["0", "zero", "test", null, undefined];
     arrange.forEach((item) => {
       assertIsValid({
         value: item,
         rule: "string",
-        error
+        error,
       });
     });
   });
 
   test("maxLength validation rule", () => {
     let arrange: any[] = ["test1234"];
-    let error = new ValidationError(`The max length of property field is 5 characters`)
-    
+    let error = new ValidationError(
+      `The max length of property field is 5 characters`
+    );
+
     arrange.forEach((item) => {
       assertIsInvalid({
         value: item,
         rule: "maxLength",
         error,
-        params: [5]
+        params: [5],
       });
     });
-
 
     arrange = ["test1", "test2", null, undefined];
     arrange.forEach((item) => {
@@ -108,14 +108,14 @@ describe("Validators Rules Unit Tests", () => {
         value: item,
         rule: "maxLength",
         error,
-        params: [5]
+        params: [5],
       });
     });
   });
   test("boolean validation rule", () => {
     let arrange: any[] = ["test", "test2"];
-    let error = new ValidationError(`The field must be a boolean`)
-    
+    let error = new ValidationError(`The field must be a boolean`);
+
     arrange.forEach((item) => {
       assertIsInvalid({
         value: item,
@@ -123,7 +123,6 @@ describe("Validators Rules Unit Tests", () => {
         error,
       });
     });
-
 
     arrange = [true, false];
     arrange.forEach((item) => {
@@ -133,5 +132,36 @@ describe("Validators Rules Unit Tests", () => {
         error,
       });
     });
+  });
+
+  it("should combite two or more validation rules and throw a validation error", () => {
+    let validator = ValidatorRules.values(null, "field");
+    expect(() => validator.required().string()).toThrow(
+      new ValidationError("The field is required")
+    );
+
+    validator = ValidatorRules.values(5, "field");
+    expect(() => validator.required().string()).toThrow(
+      new ValidationError("The field must be a string")
+    );
+
+    validator = ValidatorRules.values("elisiomual", "field");
+    expect(() => validator.required().string().maxLength(5)).toThrow(
+      new ValidationError("The max length of property field is 5 characters")
+    );
+
+    validator = ValidatorRules.values(5, "field");
+    expect(() => validator.required().boolean()).toThrow(
+      new ValidationError("The field must be a boolean")
+    );
+  });
+
+  it('should be valid to combine two or more validation rules', () => {
+    expect.assertions(0)
+    ValidatorRules.values('test', 'field').required().string();
+    ValidatorRules.values("aaaaa", "field").required().string().maxLength(5)
+
+    ValidatorRules.values(true, "field").required().boolean()
+    ValidatorRules.values(false, "field").required().boolean()
   })
 });
